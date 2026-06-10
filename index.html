@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>С Днём Рождения, Мама!</title>
+<meta name="description" content="Особенное поздравление с Днём Рождения! С любовью для самого дорогого человека ❤️">
+<meta property="og:title" content="С Днём Рождения, Мама! 🎂">
+<meta property="og:description" content="Открой и посмотри — это сделано специально для тебя с любовью 🧡">
+<meta property="og:image" content="/family.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0a0420">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Unbounded:wght@600;700;800;900&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="bg"></div>
+<div class="grain"></div>
+
+<!-- ПРЕЛОАДЕР -->
+<div id="loader">
+  <div class="l-icons"><span>🎈</span><span>🎁</span><span>🎂</span><span>🎉</span></div>
+  <div class="loader-pct" id="pct">0%</div>
+  <div class="bar"><i></i></div>
+  <div class="loader-txt">ГОТОВИМ ПРАЗДНИК…</div>
+</div>
+
+<!-- ОТКРЫТЬ -->
+<div id="intro">
+  <h2>Для самого дорогого человека ✨</h2>
+  <button class="btn3d pulse" id="startBtn">Открыть поздравление 🎉</button>
+</div>
+
+<!-- HERO -->
+<section class="hero in" id="hero">
+  <div class="wrap">
+    <span class="badge">С Днём Рождения</span>
+    <h1 class="reveal" id="heroName" data-text=""></h1>
+    <div class="t3d pink age3d float" id="heroAge"></div>
+    <p>Сегодня твой день. И весь этот мир сегодня крутится вокруг тебя 🧡</p>
+  </div>
+</section>
+
+<!-- ШАРИКИ -->
+<section>
+  <div class="wrap">
+    <h2 class="h-tag">Лопни <em>все шарики</em> 🎈</h2>
+    <div class="balloon-stage" id="stage">
+      <div class="stage-hint" id="hint">
+        <div class="big">Нажимай на шарики!</div>
+        <small>Они летят снизу — лови и лопай. Когда поймаешь все — будет сюрприз ✨</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- МЫ ТЕБЯ ЛЮБИМ ЗА ТО... -->
+<section>
+  <div class="wrap love-wrap">
+    <h2 class="h-tag">Мы тебя любим <em>за то, что...</em></h2>
+    <!-- Боковые выглядывающие фото -->
+    <img class="peek-photo left" id="peekLeft" src="" alt="" draggable="false">
+    <img class="peek-photo right" id="peekRight" src="" alt="" draggable="false">
+    <div class="love-card" id="loveCard">
+      <div class="num">💛</div>
+      <div class="reason" id="loveReason">...</div>
+      <div class="love-progress" id="loveProg"></div>
+    </div>
+    <button class="btn3d violet" id="nextReasonBtn">Ещё причина 💗</button>
+  </div>
+</section>
+
+<!-- ТОРТ / СВЕЧИ -->
+<section>
+  <div class="wrap cake-wrap">
+    <h2 class="h-tag">Загадай <em>желание</em> и задуй свечи 🎂</h2>
+    <div class="cake" id="cake" role="button" tabindex="0" aria-label="Задуть свечи">
+      <svg viewBox="0 0 240 200" id="cakeSvg">
+        <!-- свечи -->
+        <g class="candle" data-i="0"><rect x="58" y="70" width="6" height="34" fill="#ff8a3d"/><g class="flame"><ellipse cx="61" cy="64" rx="5" ry="9" fill="#ffd23d"/><ellipse cx="61" cy="66" rx="2.5" ry="5" fill="#ff6a00"/></g></g>
+        <g class="candle" data-i="1"><rect x="98" y="62" width="6" height="42" fill="#23e6c8"/><g class="flame"><ellipse cx="101" cy="56" rx="5" ry="9" fill="#ffd23d"/><ellipse cx="101" cy="58" rx="2.5" ry="5" fill="#ff6a00"/></g></g>
+        <g class="candle" data-i="2"><rect x="138" y="62" width="6" height="42" fill="#7b5cff"/><g class="flame"><ellipse cx="141" cy="56" rx="5" ry="9" fill="#ffd23d"/><ellipse cx="141" cy="58" rx="2.5" ry="5" fill="#ff6a00"/></g></g>
+        <g class="candle" data-i="3"><rect x="178" y="70" width="6" height="34" fill="#ff3d8b"/><g class="flame"><ellipse cx="181" cy="64" rx="5" ry="9" fill="#ffd23d"/><ellipse cx="181" cy="66" rx="2.5" ry="5" fill="#ff6a00"/></g></g>
+        <!-- торт -->
+        <rect x="40" y="104" width="160" height="64" rx="14" fill="#ff8fb3"/>
+        <rect x="40" y="104" width="160" height="22" rx="11" fill="#ffd6e3"/>
+        <path d="M40 116 q20 14 40 0 t40 0 t40 0 t40 0 v6 H40 Z" fill="#fff3f7"/>
+        <ellipse cx="70" cy="150" rx="5" ry="5" fill="#7b5cff"/>
+        <ellipse cx="120" cy="156" rx="5" ry="5" fill="#23e6c8"/>
+        <ellipse cx="170" cy="150" rx="5" ry="5" fill="#ffd23d"/>
+        <rect x="34" y="166" width="172" height="14" rx="7" fill="#c97a93"/>
+      </svg>
+    </div>
+    <div class="cake-status" id="cakeStatus">Нажми на торт, чтобы задуть свечи 🌬️</div>
+  </div>
+</section>
+
+<!-- ВИДЕО -->
+<section id="videoSection">
+  <div class="wrap">
+    <h2 class="h-tag">Смотри, <em>что мы записали</em></h2>
+
+    <!-- Первое видео -->
+    <div class="video-box">
+      <video id="mainVideo" controls playsinline>
+        <source src="/video.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Сообщение после первого видео + второе видео -->
+    <div class="video-msg" id="videoMsg">
+      <span>💌</span>
+      <p>Мама, это маленький кусочек нашей жизни — и всё это благодаря тебе 🧡<br>
+      <small>А вот ещё одно видео — специально для тебя ✨</small></p>
+    </div>
+
+    <!-- Второе видео (скрыто до просмотра первого) -->
+    <div class="video-box video-box--second" id="secondVideoBox">
+      <div class="video-box-label">🎬 Ещё одно видео для тебя</div>
+      <video id="secondVideo" controls playsinline>
+        <source src="/video2.mov" type="video/quicktime">
+        <source src="/video2.mov" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+
+<!-- ГАЛЕРЕЯ / ВОСПОМИНАНИЯ -->
+<section id="memoriesSection">
+  <div class="wrap">
+    <h2 class="h-tag">Посмотри <em>воспоминания</em> 📸</h2>
+    <div class="gallery-controls">
+      <span class="gallery-counter" id="galleryCounter"></span>
+    </div>
+    <div class="masonry-gallery" id="masonryGallery">
+      <!-- Фото вставляются через JS с lazy-load -->
+    </div>
+    <!-- Кнопка центрирована через CSS (#loadMoreBtn) -->
+    <button class="btn3d orange" id="loadMoreBtn">Показать ещё 📷</button>
+  </div>
+</section>
+
+<!-- ПИСЬМО -->
+<section id="letterSection">
+  <div class="wrap">
+    <h2 class="h-tag">Несколько <em>слов от души</em></h2>
+    <div class="letter">
+      <div class="letter-deco">💌</div>
+      <div class="letter-body" id="letterBody">
+        <!-- Параграфы вставляются через JS с анимацией -->
+      </div>
+      <span class="sign" id="letterSign"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ФИНАЛ -->
+<section class="final">
+  <div class="wrap">
+    <div class="t3d float">С Днём<br>Рождения!</div>
+    <br>
+    <button class="btn3d gold" id="boomBtn">Запустить салют 🎆</button>
+  </div>
+</section>
+
+<button id="musicBtn" title="Музыка" aria-label="Включить музыку">🎵</button>
+<audio id="bgm" loop><source src="/music.mp3" type="audio/mpeg"></audio>
+<canvas id="confetti"></canvas>
+
+<!-- ЛАЙТБОКС -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр фото">
+  <button id="lightboxClose" aria-label="Закрыть">✕</button>
+  <button id="lightboxPrev" aria-label="Предыдущее">‹</button>
+  <!-- Спиннер загрузки -->
+  <div id="lightboxSpinner"></div>
+  <img id="lightboxImg" src="" alt="Воспоминание">
+  <button id="lightboxNext" aria-label="Следующее">›</button>
+  <div id="lightboxCounter"></div>
+</div>
+
+<script type="module" src="/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+:root{
+  --bg:#0a0420;
+  --c1:#ff3d8b; --c2:#ff8a3d; --c3:#7b5cff; --c4:#23e6c8; --c5:#ffd23d;
+  --ink:#fff;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(closest-side at 15% 20%, rgba(255,61,139,.55), transparent 60%),
+    radial-gradient(closest-side at 85% 15%, rgba(123,92,255,.5), transparent 60%),
+    radial-gradient(closest-side at 70% 80%, rgba(255,138,61,.45), transparent 60%),
+    radial-gradient(closest-side at 25% 85%, rgba(35,230,200,.4), transparent 60%),
+    var(--bg);
+  filter:saturate(1.2);animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{100%{transform:scale(1.15) translate(-2%,-2%)}}
+.grain{position:fixed;inset:0;z-index:-1;opacity:.05;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ===== 3D ТЕКСТ (универсальный класс для кнопок и заголовков) ===== */
+.t3d{font-family:'Bagel Fat One',cursive;color:var(--c5);
+  text-shadow:0 1px 0 #e8a800,0 2px 0 #d99c00,0 3px 0 #cc9200,0 4px 0 #bf8800,
+    0 5px 0 #b37e00,0 6px 0 #a67400,0 9px 14px rgba(0,0,0,.45),0 14px 30px rgba(255,61,139,.35)}
+.t3d.pink{color:var(--c1);
+  text-shadow:0 1px 0 #cc2e6f,0 2px 0 #c22a68,0 3px 0 #b82661,0 4px 0 #ae225a,
+    0 5px 0 #a41e53,0 6px 0 #9a1a4c,0 9px 14px rgba(0,0,0,.45),0 14px 34px rgba(123,92,255,.45)}
+.t3d.white{color:#fff;
+  text-shadow:0 1px 0 #d9c3ff,0 2px 0 #c9adff,0 3px 0 #b998ff,0 4px 0 #a883ff,
+    0 5px 0 #976eff,0 6px 0 #8659ff,0 9px 14px rgba(0,0,0,.5)}
+.float{animation:floaty 4s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* ===== ПРЕЛОАДЕР с 3D-иконками ===== */
+#loader{position:fixed;inset:0;z-index:100;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;
+  transition:opacity .7s ease,visibility .7s ease}
+#loader.gone{opacity:0;visibility:hidden}
+.l-icons{display:flex;gap:22px;font-size:50px}
+.l-icons span{display:inline-block;filter:drop-shadow(0 8px 10px rgba(0,0,0,.45));animation:hop 1.2s ease-in-out infinite}
+.l-icons span:nth-child(2){animation-delay:.15s}
+.l-icons span:nth-child(3){animation-delay:.3s}
+.l-icons span:nth-child(4){animation-delay:.45s}
+@keyframes hop{0%,100%{transform:translateY(0) scale(1)}40%{transform:translateY(-26px) scale(1.1)}}
+.loader-txt{font-family:'Unbounded';font-weight:700;font-size:14px;letter-spacing:3px;opacity:.8}
+.bar{width:230px;height:10px;border-radius:50px;background:rgba(255,255,255,.12);overflow:hidden;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.4)}
+.bar i{display:block;height:100%;width:0;border-radius:50px;
+  background:linear-gradient(90deg,var(--c1),var(--c2),var(--c4));animation:fill 2.6s cubic-bezier(.3,.9,.2,1) forwards}
+@keyframes fill{to{width:100%}}
+.loader-pct{font-family:'Bagel Fat One';font-size:42px;color:var(--c5);
+  text-shadow:0 1px 0 #e8a800,0 2px 0 #cc9200,0 3px 0 #b37e00,0 6px 10px rgba(0,0,0,.4)}
+
+/* ===== "ОТКРЫТЬ" ===== */
+#intro{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--bg);text-align:center;padding:24px;transition:opacity .8s,visibility .8s}
+/* БАГ #1 ИСПРАВЛЕН: pointer-events:none чтобы не блокировало клики после скрытия */
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+#intro h2{font-family:'Unbounded';font-weight:700;font-size:clamp(20px,5vw,38px);margin-bottom:34px;
+  background:linear-gradient(90deg,var(--c1),var(--c2),var(--c4));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ===== 3D КНОПКИ ===== */
+.btn3d{position:relative;border:none;cursor:pointer;border-radius:24px;padding:20px 42px;
+  font-family:'Bagel Fat One',cursive;font-size:20px;color:#fff;letter-spacing:.5px;
+  background:linear-gradient(180deg,var(--c1),#d62e72);
+  box-shadow:0 7px 0 #a01e54, 0 14px 24px rgba(255,61,139,.45);
+  text-shadow:0 2px 0 rgba(0,0,0,.25);transition:transform .08s ease, box-shadow .08s ease;
+  transform:translateY(0)}
+.btn3d:hover{transform:translateY(-2px);box-shadow:0 9px 0 #a01e54,0 18px 30px rgba(255,61,139,.55)}
+.btn3d:active{transform:translateY(5px);box-shadow:0 2px 0 #a01e54,0 6px 12px rgba(255,61,139,.4)}
+.btn3d.violet{background:linear-gradient(180deg,var(--c3),#5a3fd6);box-shadow:0 7px 0 #3f2aa6,0 14px 24px rgba(123,92,255,.45)}
+.btn3d.violet:active{box-shadow:0 2px 0 #3f2aa6,0 6px 12px rgba(123,92,255,.4)}
+.btn3d.orange{background:linear-gradient(180deg,var(--c2),#e06a1e);box-shadow:0 7px 0 #b3500f,0 14px 24px rgba(255,138,61,.45)}
+.btn3d.orange:active{box-shadow:0 2px 0 #b3500f,0 6px 12px rgba(255,138,61,.4)}
+.btn3d.gold{background:linear-gradient(180deg,var(--c5),#e0a800);color:#5a3d00;box-shadow:0 7px 0 #b38600,0 14px 24px rgba(255,210,61,.5);text-shadow:0 1px 0 rgba(255,255,255,.4)}
+.btn3d.gold:active{box-shadow:0 2px 0 #b38600,0 6px 12px rgba(255,210,61,.4)}
+.btn3d.pulse{animation:bp 2s ease-in-out infinite}
+@keyframes bp{50%{box-shadow:0 7px 0 #a01e54,0 18px 40px rgba(123,92,255,.7)}}
+
+.wrap{max-width:920px;margin:0 auto;padding:0 20px}
+section{padding:90px 0;opacity:0;transform:translateY(40px);transition:all .9s cubic-bezier(.2,.8,.2,1)}
+section.in{opacity:1;transform:none}
+
+.hero{padding-top:120px;text-align:center}
+.badge{display:inline-block;font-family:'Unbounded';font-weight:700;font-size:13px;letter-spacing:2px;
+  text-transform:uppercase;padding:8px 18px;border-radius:50px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);margin-bottom:24px;opacity:0;animation:rise .8s .2s forwards}
+.hero h1{font-family:'Unbounded';font-weight:900;line-height:.95;font-size:clamp(40px,11vw,108px);letter-spacing:-2px}
+.reveal span{display:inline-block;opacity:0;transform:translateY(40px) rotate(8deg);
+  animation:letterIn .6s cubic-bezier(.2,.9,.2,1) forwards}
+@keyframes letterIn{to{opacity:1;transform:none}}
+.age3d{font-size:clamp(90px,30vw,260px);line-height:.95;margin:14px 0;opacity:0;animation:popAge 1s .9s cubic-bezier(.2,1.4,.3,1) forwards}
+@keyframes popAge{0%{opacity:0;transform:scale(.3) rotate(-15deg)}100%{opacity:1;transform:none}}
+.hero p{font-size:clamp(16px,2.5vw,22px);opacity:0;max-width:600px;margin:18px auto 0;animation:rise .8s 1.3s forwards}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:.85;transform:none}}
+
+.h-tag{font-family:'Unbounded';font-weight:700;font-size:clamp(28px,6vw,56px);margin-bottom:36px;text-align:center}
+.h-tag em{font-style:normal;background:linear-gradient(90deg,var(--c4),var(--c3));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ===== ШАРИКИ ===== */
+.balloon-stage{position:relative;border-radius:28px;overflow:hidden;min-height:420px;
+  background:linear-gradient(135deg,rgba(123,92,255,.18),rgba(35,230,200,.15));
+  border:2px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;text-align:center}
+.stage-hint{padding:20px;z-index:2;pointer-events:none}
+.stage-hint .big{font-family:'Unbounded';font-weight:800;font-size:clamp(22px,5vw,40px);margin-bottom:10px}
+.stage-hint small{opacity:.7}
+.balloon{position:absolute;bottom:-120px;cursor:pointer;will-change:transform;user-select:none;width:64px;height:80px;transition:transform .1s; outline: none;}
+.balloon:focus-visible{box-shadow:0 0 0 4px var(--c4); border-radius: 50%;}
+.balloon:active{transform:scale(.9)}
+.balloon svg{width:100%;height:100%;filter:drop-shadow(0 6px 10px rgba(0,0,0,.3))}
+
+/* ===== "МЫ ТЕБЯ ЛЮБИМ ЗА ТО..." ===== */
+.love-wrap{text-align:center;position:relative}
+.love-card{max-width:560px;margin:0 auto 30px;min-height:200px;border-radius:28px;padding:clamp(30px,6vw,54px);
+  background:linear-gradient(135deg,rgba(255,61,139,.22),rgba(123,92,255,.22));
+  border:1px solid rgba(255,255,255,.15);box-shadow:0 24px 60px rgba(0,0,0,.4);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  position:relative;z-index:2}
+.love-card .num{font-family:'Bagel Fat One';font-size:22px;color:var(--c5)}
+.love-card .reason{font-size:clamp(19px,3.4vw,26px);font-weight:700;line-height:1.4;
+  transition:opacity .35s ease, transform .35s ease}
+.love-card.swap .reason{opacity:0;transform:translateY(12px)}
+.love-progress{font-family:'Unbounded';font-size:13px;opacity:.6;margin-top:6px}
+
+/* Боковые фото-выглядышки */
+.peek-photo{position:absolute;top:50%;transform:translateY(-50%) translateX(0);
+  width:clamp(90px,14vw,150px);aspect-ratio:3/4;object-fit:cover;
+  border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,.55);
+  border:3px solid rgba(255,255,255,.2);
+  transition:opacity .5s ease, transform .5s cubic-bezier(.2,.9,.2,1);
+  opacity:0;z-index:1;pointer-events:none}
+.peek-photo.left{left:0;transform:translateY(-50%) translateX(-110%)}
+.peek-photo.right{right:0;transform:translateY(-50%) translateX(110%)}
+.peek-photo.left.visible{opacity:1;transform:translateY(-50%) translateX(-8px)}
+.peek-photo.right.visible{opacity:1;transform:translateY(-50%) translateX(8px)}
+@media(max-width:860px){
+  .peek-photo{width:clamp(64px,11vw,100px);border-radius:14px}
+  .peek-photo.left.visible{transform:translateY(-50%) translateX(4px)}
+  .peek-photo.right.visible{transform:translateY(-50%) translateX(-4px)}
+}
+@media(max-width:600px){
+  /* На телефоне фото выглядывают сверху/снизу карточки */
+  .peek-photo{width:clamp(70px,20vw,100px);top:auto;bottom:-14px;transform:none;border-radius:14px}
+  .peek-photo.left{left:10px;bottom:-14px;transform:rotate(-8deg) translateY(60%)}
+  .peek-photo.right{right:10px;bottom:-14px;transform:rotate(8deg) translateY(60%)}
+  .peek-photo.left.visible{opacity:1;transform:rotate(-8deg) translateY(20%)}
+  .peek-photo.right.visible{opacity:1;transform:rotate(8deg) translateY(20%)}
+}
+
+/* ===== ТОРТ / СВЕЧИ ===== */
+.cake-wrap{text-align:center}
+.cake{position:relative;width:240px;max-width:80%;margin:0 auto 24px;cursor:pointer;user-select:none; outline: none;}
+.cake:focus-visible{box-shadow:0 0 0 4px var(--c4); border-radius: 14px;}
+.cake svg{width:100%;display:block;filter:drop-shadow(0 16px 24px rgba(0,0,0,.4))}
+.flame{transform-origin:center bottom;animation:flick .3s ease-in-out infinite alternate}
+@keyframes flick{from{transform:scaleY(1) translateX(0)}to{transform:scaleY(1.18) translateX(.6px)}}
+.cake-status{font-family:'Unbounded';font-weight:700;font-size:clamp(16px,3vw,22px);min-height:30px}
+
+/* видео */
+.video-box{position:relative;border-radius:28px;overflow:hidden;border:2px solid rgba(255,255,255,.1);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.video-box video{width:100%;display:block;max-height:70vh;background:#000}
+.video-msg{display:flex;align-items:center;gap:16px;margin-top:20px;padding:20px 24px;
+  border-radius:20px;background:linear-gradient(135deg,rgba(255,61,139,.15),rgba(123,92,255,.15));
+  border:1px solid rgba(255,255,255,.12);opacity:0;transform:translateY(16px);
+  transition:opacity .6s ease, transform .6s ease}
+.video-msg.show{opacity:1;transform:none}
+.video-msg span{font-size:32px;flex-shrink:0}
+.video-msg p{font-size:clamp(15px,2.2vw,18px);line-height:1.6;text-align:left}
+.video-msg small{opacity:.65;font-size:13px}
+
+/* Второе видео */
+.video-box--second{
+  margin-top:28px;
+  opacity:0;
+  transform:translateY(30px) scale(.97);
+  transition:opacity .8s ease, transform .8s cubic-bezier(.2,.9,.2,1);
+  pointer-events:none;
+}
+.video-box--second.visible{
+  opacity:1;
+  transform:none;
+  pointer-events:auto;
+}
+.video-box-label{
+  position:absolute;top:16px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(90deg,var(--c1),var(--c4));
+  color:#fff;font-family:'Unbounded';font-weight:700;
+  font-size:12px;letter-spacing:.5px;
+  padding:8px 18px;border-radius:99px;
+  white-space:nowrap;z-index:2;
+  box-shadow:0 4px 20px rgba(255,61,139,.4);
+}
+
+/* ===== ГАЛЕРЕЯ ВОСПОМИНАНИЙ (masonry-like columns) ===== */
+.gallery-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px}
+.gallery-counter{font-family:'Unbounded';font-size:12px;opacity:.55;letter-spacing:1px}
+
+.masonry-gallery{
+  columns:4;column-gap:10px;
+}
+.masonry-gallery .m-item{
+  break-inside:avoid;margin-bottom:10px;border-radius:14px;overflow:hidden;
+  cursor:pointer;position:relative;display:block;
+  background:linear-gradient(135deg,rgba(35,230,200,.15),rgba(255,138,61,.15));
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.masonry-gallery .m-item:hover{transform:scale(1.03);box-shadow:0 12px 36px rgba(0,0,0,.5)}
+.masonry-gallery .m-item img{
+  width:100%;height:auto;display:block;object-fit:cover;
+  opacity:0;transition:opacity .4s ease;
+}
+.masonry-gallery .m-item img.loaded{opacity:1}
+
+/* Лайтбокс */
+#lightbox{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.92);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;padding:16px}
+#lightbox.open{opacity:1;visibility:visible}
+#lightbox img{max-width:min(94vw,900px);max-height:90vh;border-radius:16px;
+  object-fit:contain;box-shadow:0 24px 80px rgba(0,0,0,.7);
+  transform:scale(.9);transition:transform .3s cubic-bezier(.2,.9,.2,1), opacity .2s ease}
+#lightbox.open img{transform:scale(1)}
+/* Спиннер загрузки в лайтбоксе */
+#lightboxSpinner{position:absolute;width:48px;height:48px;border:4px solid rgba(255,255,255,.15);
+  border-top-color:var(--c4);border-radius:50%;animation:spin 0.8s linear infinite;
+  opacity:0;transition:opacity .2s;pointer-events:none}
+#lightboxSpinner.visible{opacity:1}
+#lightboxClose{position:absolute;top:16px;right:20px;background:none;border:none;
+  color:#fff;font-size:36px;cursor:pointer;line-height:1;opacity:.8}
+#lightboxClose:hover{opacity:1}
+#lightboxPrev,#lightboxNext{position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,.12);border:none;color:#fff;font-size:28px;
+  width:50px;height:50px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;backdrop-filter:blur(4px)}
+#lightboxPrev{left:12px}
+#lightboxNext{right:12px}
+#lightboxPrev:hover,#lightboxNext:hover{background:rgba(255,255,255,.25)}
+#lightboxCounter{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  font-family:'Unbounded';font-size:12px;opacity:.6;letter-spacing:1px}
+
+@media(max-width:900px){.masonry-gallery{columns:3}}
+@media(max-width:600px){
+  .masonry-gallery{columns:2;column-gap:7px}
+  .masonry-gallery .m-item{margin-bottom:7px;border-radius:10px}
+  #lightboxPrev,#lightboxNext{width:40px;height:40px;font-size:22px}
+  .video-msg{flex-direction:column;text-align:center;gap:10px}
+  .video-msg p{text-align:center}
+}
+@media(max-width:360px){.masonry-gallery{columns:2}}
+
+/* письмо */
+.letter{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:28px;
+  padding:clamp(28px,5vw,52px);
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+/* Мерцающий фоновый градиент */
+.letter::before{
+  content:'';position:absolute;inset:0;border-radius:28px;
+  background:radial-gradient(ellipse at 20% 50%, rgba(255,61,139,.08), transparent 60%),
+             radial-gradient(ellipse at 80% 50%, rgba(123,92,255,.08), transparent 60%);
+  animation:letterGlow 6s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+@keyframes letterGlow{
+  0%{opacity:.5}100%{opacity:1}
+}
+
+/* Иконка конверта */
+.letter-deco{
+  font-size:48px;
+  margin-bottom:20px;
+  display:inline-block;
+  animation:floaty 4s ease-in-out infinite;
+  filter:drop-shadow(0 8px 16px rgba(255,61,139,.4));
+}
+
+/* Тело письма */
+.letter-body{display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+
+/* Каждый параграф письма — появляется по очереди */
+.letter-line{
+  font-size:clamp(16px,2.4vw,21px);
+  line-height:1.75;
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.letter-line.visible{opacity:1;transform:none}
+
+/* Первый параграф — крупнее и жирнее */
+.letter-line:first-child{
+  font-size:clamp(18px,2.8vw,24px);
+  font-weight:700;
+  color:var(--c5);
+  filter:drop-shadow(0 0 12px rgba(255,210,61,.3));
+}
+
+/* Последний абзац — с особым акцентом */
+.letter-line.finale{
+  font-family:'Unbounded';
+  font-weight:700;
+  font-size:clamp(17px,2.5vw,22px);
+  background:linear-gradient(90deg,var(--c1),var(--c4));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* Подпись */
+.letter .sign{
+  font-family:'Unbounded';
+  font-weight:700;
+  margin-top:8px;
+  background:linear-gradient(90deg,var(--c1),var(--c2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  display:inline-block;
+  opacity:0;transform:translateY(14px);
+  transition:opacity .7s ease, transform .7s ease;
+  font-size:clamp(13px,2vw,16px);
+}
+.letter .sign.visible{opacity:1;transform:none}
+
+/* Летящие сердечки из письма */
+.letter-hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.letter-heart{
+  position:absolute;bottom:-30px;font-size:clamp(14px,2vw,20px);
+  animation:heartFloat linear infinite;opacity:0;
+}
+@keyframes heartFloat{
+  0%{opacity:0;transform:translateY(0) scale(.8)}
+  10%{opacity:.7}
+  90%{opacity:.4}
+  100%{opacity:0;transform:translateY(-120%) scale(1.2)}
+}
+
+@media(max-width:600px){
+  .letter-line{font-size:16px;line-height:1.7}
+  .letter-line:first-child{font-size:17px}
+  .letter-deco{font-size:38px}
+}
+
+.final{text-align:center;padding-bottom:150px}
+.final .t3d{font-size:clamp(46px,12vw,110px);line-height:.95}
+
+#musicBtn{position:fixed;right:18px;bottom:18px;z-index:40;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;
+  font-size:22px;color:#fff;background:linear-gradient(135deg,var(--c3),var(--c1));box-shadow:0 8px 30px rgba(0,0,0,.4)}
+#musicBtn.play{animation:spin 4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+canvas#confetti{position:fixed;inset:0;z-index:30;pointer-events:none}
+
+/* ====== АДАПТИВ ПОД ТЕЛЕФОН ====== */
+#musicBtn{right:max(18px, env(safe-area-inset-right));bottom:max(18px, env(safe-area-inset-bottom))}
+.wrap{padding-left:max(20px, env(safe-area-inset-left));padding-right:max(20px, env(safe-area-inset-right))}
+
+@media (max-width:600px){
+  section{padding:64px 0}
+  .wrap{padding-left:max(16px, env(safe-area-inset-left));padding-right:max(16px, env(safe-area-inset-right))}
+
+  .hero{padding-top:96px}
+  .hero h1{font-size:clamp(34px,13vw,60px);letter-spacing:-1px;word-break:break-word}
+  .age3d{font-size:clamp(96px,42vw,180px);margin:6px 0}
+  .hero p{font-size:16px;padding:0 6px}
+
+  .h-tag{font-size:clamp(24px,7.5vw,34px);margin-bottom:26px;padding:0 6px}
+
+  .btn3d{font-size:17px;padding:16px 26px;border-radius:20px;
+    box-shadow:0 6px 0 #a01e54,0 10px 18px rgba(255,61,139,.4);
+    max-width:calc(100vw - 40px)}
+  .btn3d:active{transform:translateY(4px)}
+  .btn3d.violet{box-shadow:0 6px 0 #3f2aa6,0 10px 18px rgba(123,92,255,.4)}
+  .btn3d.orange{box-shadow:0 6px 0 #b3500f,0 10px 18px rgba(255,138,61,.4)}
+  .btn3d.gold{box-shadow:0 6px 0 #b38600,0 10px 18px rgba(255,210,61,.45)}
+
+  .balloon-stage{min-height:360px}
+  .balloon{width:52px;height:66px}
+  .stage-hint .big{font-size:clamp(20px,6vw,28px)}
+
+  .love-card{min-height:170px;padding:28px 22px}
+  .love-card .reason{font-size:18px}
+
+  .cake{width:min(220px,78vw)}
+  .cake-status{font-size:15px;padding:0 10px}
+
+  .final .t3d{font-size:clamp(40px,13vw,72px)}
+  .l-icons{font-size:40px;gap:16px}
+  .loader-pct{font-size:36px}
+  .bar{width:200px}
+
+  /* Убраны мёртвые правила .gallery (галерея заменена на masonry) */
+
+  .letter{padding:28px 22px;font-size:16px}
+
+  #musicBtn{width:58px;height:58px;font-size:24px}
+}
+
+@media (max-width:360px){
+  .hero h1{font-size:30px}
+  .age3d{font-size:clamp(80px,40vw,150px)}
+  .btn3d{font-size:16px;padding:14px 22px}
+  /* Убрано мёртвое правило .gallery */
+}
+
+/* Центрирование кнопки «Показать ещё» */
+#loadMoreBtn{display:block;margin:28px auto 0}
+
+@media (prefers-reduced-motion:reduce){
+  .float,.l-icons span,.loader-gift,.openBtn,.btn3d.pulse{animation:none !important}
+  *{scroll-behavior:auto}
+}
