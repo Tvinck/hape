@@ -220,7 +220,7 @@ function nextReason() {
 /* ШАРИКИ */
 const stage = document.getElementById('stage');
 const balloonColors = ['#ff3d8b', '#ff8a3d', '#7b5cff', '#23e6c8', '#ffd23d'];
-let spawned = 0, popped = 0, balloonTimer = null, started = false;
+let popped = 0, activeBalloons = 0, balloonTimer = null, started = false;
 const TOTAL = 8;
 
 function balloonSVG(c) {
@@ -231,8 +231,15 @@ function balloonSVG(c) {
 }
 
 function spawnBalloon() {
-  if (spawned >= TOTAL) { clearInterval(balloonTimer); return; }
-  spawned++;
+  if (popped >= TOTAL) {
+    clearInterval(balloonTimer);
+    return;
+  }
+
+  // Ограничиваем количество активных шаров на экране до 3, чтобы не перегружать сцену
+  if (activeBalloons >= 3) return;
+
+  activeBalloons++;
   const b = document.createElement('div');
   b.className = 'balloon';
   b.setAttribute('role', 'button');
@@ -247,25 +254,41 @@ function spawnBalloon() {
   const dur = 6 + Math.random() * 3;
   const rise = stage.clientHeight + 150;
   b.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-' + rise + 'px)' }], { duration: dur * 1000, easing: 'linear', fill: 'forwards' });
-  setTimeout(() => { if (b.parentNode) b.remove() }, dur * 1000);
   
-  b.addEventListener('click', () => popBalloon(b, c));
-  b.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') popBalloon(b, c) });
+  // Убираем упущенный шар с задержкой и освобождаем слот для спавна нового
+  const missTimeout = setTimeout(() => {
+    if (b.parentNode) {
+      b.remove();
+      activeBalloons--;
+    }
+  }, dur * 1000);
+  
+  const pop = () => {
+    clearTimeout(missTimeout);
+    popped++;
+    activeBalloons--;
+    burstAt(b.getBoundingClientRect(), c);
+    b.remove();
+    
+    if (popped >= TOTAL) {
+      clearInterval(balloonTimer);
+      // Удаляем все оставшиеся шары
+      document.querySelectorAll('.balloon').forEach(el => el.remove());
+
+      document.getElementById('hint').innerHTML = `
+        <div style="z-index:2;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:16px;">
+          <img src="/family.jpg" alt="Наша семья" style="width:min(320px,85%);border-radius:20px;box-shadow:0 16px 48px rgba(0,0,0,.55);border:3px solid rgba(255,255,255,.2);animation:popAge .6s cubic-bezier(.2,1.4,.3,1) both">
+          <div class="big" style="font-size:clamp(20px,5vw,32px)">Ты лучшая мама на свете 🧡</div>
+          <div style="font-family:'Manrope',sans-serif;font-size:clamp(16px,3vw,22px);opacity:.9;font-weight:600;">Мы тебя очень любим!</div>
+        </div>`;
+      boom();
+    }
+  };
+
+  b.addEventListener('click', pop);
+  b.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') pop() });
   
   stage.appendChild(b);
-}
-
-function popBalloon(b, c) {
-  popped++; burstAt(b.getBoundingClientRect(), c); b.remove();
-  if (popped >= TOTAL) {
-    document.getElementById('hint').innerHTML = `
-      <div style="z-index:2;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:16px;">
-        <img src="/family.jpg" alt="Наша семья" style="width:min(320px,85%);border-radius:20px;box-shadow:0 16px 48px rgba(0,0,0,.55);border:3px solid rgba(255,255,255,.2);animation:popAge .6s cubic-bezier(.2,1.4,.3,1) both">
-        <div class="big" style="font-size:clamp(20px,5vw,32px)">Ты лучшая мама на свете 🧡</div>
-        <div style="font-family:'Manrope',sans-serif;font-size:clamp(16px,3vw,22px);opacity:.9;font-weight:600;">Мы тебя очень любим!</div>
-      </div>`;
-    boom();
-  }
 }
 
 function startBalloons() {
